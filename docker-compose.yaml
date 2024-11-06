@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:17
+    container_name: db
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "psql -U kea -d kea -c 'SELECT version FROM schema_version'"]
+    environment:
+      - POSTGRES_PASSWORD=kea
+      - POSTGRES_USER=kea
+      - TZ="America/New_York"
+      - DEBIAN_FRONTEND=noninteractive
+    volumes:
+      - ./database:/var/lib/postgresql
+      - type: bind
+        source: ./initdb  # Database setup script from kea for the first run
+        target: /docker-entrypoint-initdb.d
+    network_mode: host
+
+  kea:
+    #image: docker.cloudsmith.io/isc/docker/kea-dhcp4:${KEA_VERSION}
+    build:
+      context: kea
+      dockerfile: Dockerfile
+    container_name: kea
+    depends_on:
+      db:
+        condition: service_healthy  # Delay start until the database is healthy
+    network_mode: host
+    environment:
+      - TZ="America/New_York"
+      - DEBIAN_FRONTEND=noninteractive
+    volumes:
+      - type: bind
+        source: ./kea/config  # Configuration files for Kea
+        target: /etc/kea
+      - ./kea/var:/var/lib/kea  # Persistent data
+    restart: always
