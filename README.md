@@ -1,6 +1,24 @@
 # docker-kea
-A docker image for ISC Kea DHCPv4 server with a Stork Agent pre-installed
-It is based on the official Kea 2.6 packages from ISC, in a ubuntu 24.04 LTS image.
+
+A Docker image for ISC Kea DHCPv4 server with Stork Agent pre-installed.
+
+## Overview
+
+This Docker image provides a ready-to-use ISC Kea DHCP server with integrated Stork Agent monitoring capabilities. It's designed to be lightweight, secure, and easy to deploy in containerized environments.
+
+## Features
+
+- ISC Kea DHCPv4 server
+- Pre-installed Stork Agent for monitoring
+- Docker-optimized configuration
+- Easy to customize and deploy
+
+## Quick Start
+
+Pull and run the Docker image:
+
+
+docker pull signalorange/kea:ubuntu24.04-2.6
 
 #### Usage
 
